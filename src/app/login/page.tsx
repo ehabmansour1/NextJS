@@ -19,7 +19,7 @@ export default function LoginPage() {
     return (
       <div className="login-page">
         <div className="login-card">
-          <p className="text-center text-white">Loading...</p>
+          <p className="text-center text-white">Loading..</p>
         </div>
       </div>
     );
