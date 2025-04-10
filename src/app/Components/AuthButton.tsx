@@ -2,6 +2,7 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AuthButton() {
   const { data: session } = useSession();
@@ -11,12 +12,12 @@ export default function AuthButton() {
       <div className="auth-button-container">
         <div className="user-info">
           {session.user?.image && (
-            // Using img instead of next/image because of Google profile image domain restrictions
-            <img
+            <Image
               src={session.user.image}
-              alt={session.user?.name || "User"}
+              alt={session.user?.name || "User avatar"}
+              width={32}
+              height={32}
               className="user-avatar"
-              referrerPolicy="no-referrer"
             />
           )}
           <span className="user-name">{session.user?.name}</span>
