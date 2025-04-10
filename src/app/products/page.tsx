@@ -1,74 +1,64 @@
-import { Suspense } from "react";
-import ProductCard from "../Components/ProductCard";
-import ProductFilters from "../Components/ProductFilters";
+"use client";
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+import { useEffect, useState } from "react";
+import { api, type Product } from "@/services/api";
+import Link from "next/link";
 
-async function getProducts(): Promise<Product[]> {
-  const res = await fetch("https://fakestoreapi.com/products", {
-    next: { revalidate: 3600 },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
-  return res.json();
-}
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-function filterProductsByPrice(
-  products: Product[],
-  priceRange: string
-): Product[] {
-  if (priceRange === "all") return products;
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await api.getAllProducts();
+        setProducts(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const [min, max] = priceRange.split("-").map(Number);
-  if (priceRange === "200+") {
-    return products.filter((product) => product.price > 200);
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
   }
 
-  return products.filter((product) => {
-    const price = product.price;
-    return price >= min && price <= max;
-  });
-}
-
-function ProductsList({ products }: { products: Product[] }) {
-  return (
-    <div className="products-grid">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}
-
-export default async function ProductsPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const products = await getProducts();
-  const priceRange = (searchParams.price as string) || "all";
-  const filteredProducts = filterProductsByPrice(products, priceRange);
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="products-container">
       <div className="products-header">
         <h1>Our Products</h1>
       </div>
-      <Suspense fallback={<div className="loading">Loading products...</div>}>
-        <ProductsList products={filteredProducts} />
-      </Suspense>
+      <div className="products-grid">
+        {products.map((product) => (
+          <div key={product.id} className="product-card">
+            <Link href={`/products/${product.id}`} className="product-link">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="product-image"
+              />
+              <h3 className="product-name">{product.title}</h3>
+              <p className="product-description">{product.description}</p>
+              <div className="product-footer">
+                <div className="product-price">${product.price.toFixed(2)}</div>
+                <div className="rating">
+                  {"★".repeat(Math.floor(product.rating.rate))}
+                  {"☆".repeat(5 - Math.floor(product.rating.rate))}
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

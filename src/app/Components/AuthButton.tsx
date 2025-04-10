@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function AuthButton() {
@@ -11,6 +11,7 @@ export default function AuthButton() {
       <div className="auth-button-container">
         <div className="user-info">
           {session.user?.image && (
+            // Using img instead of next/image because of Google profile image domain restrictions
             <img
               src={session.user.image}
               alt={session.user?.name || "User"}

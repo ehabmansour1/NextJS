@@ -10,13 +10,13 @@ export default function NotFound() {
         <div className="not-found-glitch">404</div>
         <h1>Page Not Found</h1>
         <p>
-          Oops! The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
         <div className="not-found-actions">
-          <Link href="/" className="primary-button">
-            Go Home
+          <Link href="/" className="btn-primary">
+            Go to Home
           </Link>
-          <Link href="/products" className="secondary-button">
+          <Link href="/products" className="btn">
             Browse Products
           </Link>
         </div>

@@ -544,15 +544,13 @@ nav {
   }
 }
 .product-link {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
 }
 .product-link:hover {
-  color: #ff9933;
+  transform: translateY(-5px);
 }
 .product-details-container {
   max-width: 1200px;
