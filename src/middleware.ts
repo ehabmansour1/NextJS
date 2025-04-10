@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 export function middleware() {
   // Add authentication logic here if needed
   return null;

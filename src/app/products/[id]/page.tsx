@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { api, type Product } from "@/services/api";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -53,8 +54,26 @@ export default function ProductDetails() {
       <div className="product-details-content">
         <div className="product-details-left">
           <div className="product-main-image">
-            {/* Using img instead of next/image for external API images */}
-            <img src={image} alt={title} />
+            <Image
+              src={image}
+              alt={title}
+              width={500}
+              height={500}
+              className="main-image"
+            />
+          </div>
+          <div className="product-gallery">
+            {product.images.map((image, index) => (
+              <div key={index} className="gallery-image">
+                <Image
+                  src={image}
+                  alt={`${product.name} - Image ${index + 1}`}
+                  width={100}
+                  height={100}
+                  className="thumbnail"
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div className="product-details-right">

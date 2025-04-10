@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api, type Product } from "@/services/api";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -41,11 +42,15 @@ export default function ProductsPage() {
         {products.map((product) => (
           <div key={product.id} className="product-card">
             <Link href={`/products/${product.id}`} className="product-link">
-              <img
-                src={product.image}
-                alt={product.title}
-                className="product-image"
-              />
+              <div className="product-image">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  width={300}
+                  height={300}
+                  className="product-img"
+                />
+              </div>
               <h3 className="product-name">{product.title}</h3>
               <p className="product-description">{product.description}</p>
               <div className="product-footer">
