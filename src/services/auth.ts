@@ -11,4 +11,16 @@ export const { auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      // Allows callback URLs from the specified domain
+      else if (new URL(url).origin === "https://next-js-sigma-murex.vercel.app")
+        return url;
+      return baseUrl;
+    },
+  },
 });
