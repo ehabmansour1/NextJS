@@ -62,19 +62,6 @@ export default function ProductDetails() {
               className="main-image"
             />
           </div>
-          <div className="product-gallery">
-            {product.images.map((image, index) => (
-              <div key={index} className="gallery-image">
-                <Image
-                  src={image}
-                  alt={`${product.name} - Image ${index + 1}`}
-                  width={100}
-                  height={100}
-                  className="thumbnail"
-                />
-              </div>
-            ))}
-          </div>
         </div>
         <div className="product-details-right">
           <div className="product-info">
